@@ -117,6 +117,8 @@ class SmartKiller:
                     for key in self.keys:
                         keyboard.release(key)
                     self.keys.clear()
+                    # wait release key worked
+                    time.sleep(0.02)
                     # kill
                     self.kill()
 
