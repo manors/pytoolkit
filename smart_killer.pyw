@@ -16,6 +16,7 @@ The script will use pip to automatically install the requirements.
 """
 
 import re
+import time
 import importlib
 import importlib.util
 from datetime import datetime
@@ -41,7 +42,7 @@ keyboard = auto_import('keyboard', 'keyboard')
 class SmartKiller:
     """SmartKiller class"""
     def __init__(self):
-        self.kill_time = datetime.now()
+        self.last_time = datetime.now()
         self.keys = []
 
         self.actions = [
@@ -93,7 +94,7 @@ class SmartKiller:
 
     def handle_hook(self, args):
         """Handle hook callback, wait for hotkey."""
-        print(args)
+        # print(args)
         if args.name in ('ctrl', 'alt', 'left ctrl', 'left alt'):
             if args.event_type == 'down':
                 if args.name not in self.keys:
@@ -106,10 +107,10 @@ class SmartKiller:
             if ('ctrl' in self.keys or 'left ctrl' in self.keys
                ) and ('alt' in self.keys or 'left alt' in self.keys):
 
-                print((datetime.now() - self.kill_time).total_seconds())
-                if (datetime.now() - self.kill_time).total_seconds() > 0.5:
-                    print('wait for double click')
-                    self.kill_time = datetime.now()
+                interval = (datetime.now() - self.last_time).total_seconds()
+                if interval > 0.5:
+                    print(f'require double click in 0.5s, current {interval}')
+                    self.last_time = datetime.now()
                 else:
                     print('trigged')
                     # release keys
