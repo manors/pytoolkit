@@ -22,21 +22,24 @@ import importlib.util
 from datetime import datetime
 
 
-def auto_import(package, module):
-    """import module, if not exists use pip install package."""
-    if importlib.util.find_spec(module):
-        return importlib.import_module(module)
-    else:
-        import pip
-        pip.main(['install', package])
-        return importlib.import_module(module)
+def require(requirements):
+    """if not exists use pip install package."""
+    for package, module in requirements.items():
+        if not importlib.util.find_spec(module):
+            import pip
+            pip.main(['install', package])
 
 
-win32con = auto_import('pywin32', 'win32con')
-win32gui = auto_import('pywin32', 'win32gui')
-win32api = auto_import('pywin32', 'win32api')
-win32process = auto_import('pywin32', 'win32process')
-keyboard = auto_import('keyboard', 'keyboard')
+require({
+    'keyboard': 'keyboard',
+    'pywin32': 'win32',
+})
+
+import keyboard
+from win32 import win32gui
+from win32 import win32api
+from win32 import win32process
+from win32.lib import win32con
 
 
 class SmartKiller:
