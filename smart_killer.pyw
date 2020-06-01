@@ -15,6 +15,7 @@ The script will use pip to automatically install the requirements.
 :copyright: (c) 2020 by manors@live.cn.
 """
 
+import os
 import re
 import time
 import importlib
@@ -26,8 +27,7 @@ def require(requirements):
     """if not exists use pip install package."""
     for package, module in requirements.items():
         if not importlib.util.find_spec(module):
-            import pip
-            pip.main(['install', package])
+            os.system(f'pip install {package}')
 
 
 require({
@@ -106,7 +106,7 @@ class SmartKiller:
                 if args.name in self.keys:
                     self.keys.remove(args.name)
 
-        if args.name == 'x' and args.event_type == 'down':
+        if args.name.lower() == 'x' and args.event_type == 'down':
             if ('ctrl' in self.keys or 'left ctrl' in self.keys
                ) and ('alt' in self.keys or 'left alt' in self.keys):
 
@@ -121,7 +121,7 @@ class SmartKiller:
                         keyboard.release(key)
                     self.keys.clear()
                     # wait release key worked
-                    time.sleep(0.02)
+                    time.sleep(0.05)
                     # kill
                     self.kill()
 
