@@ -31,12 +31,13 @@ def require(requirements):
 
 
 require({
+    # package: module
     'keyboard': 'keyboard',
     'pywin32': 'win32',
 })
 
 import keyboard
-from win32 import win32gui
+from pywin32 import win32gui
 from win32 import win32api
 from win32 import win32process
 from win32.lib import win32con
